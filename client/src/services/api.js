@@ -20,7 +20,12 @@ export async function getStore(id) {
     return await response.json();
 }
 
-export async function getCategories(category_name) {
-    const response = await fetch(`${API_URL}/categories/${category_name}`);
+export async function getCategories(categoryName) {
+    const response = await fetch(`${API_URL}/categories/${categoryName}`);
+    return response.json();
+}
+
+export async function getPopularProducts() {
+    const response = await fetch(`${API_URL}/popular`);
     return response.json();
 }

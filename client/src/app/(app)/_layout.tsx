@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { HugeiconsIcon } from "@hugeicons/react-native";
-import { Home01Icon, Cart, Profile02Icon, Setting06Icon, Love } from "@hugeicons/core-free-icons";
+import { Home01Icon, Cart, Profile02Icon, Setting06Icon, Love, Shop } from "@hugeicons/core-free-icons";
 
 export default function AppLayout() {
     return(
@@ -26,6 +26,15 @@ export default function AppLayout() {
                 options={{ title: 'Cart', tabBarIcon: ({ color }) => 
                 <HugeiconsIcon
                     icon={Cart}
+                    size={30}
+                    color={color}
+                /> }} />
+
+                <Tabs.Screen 
+                name="stores" 
+                options={{ title: 'Stores', tabBarIcon: ({ color }) => 
+                <HugeiconsIcon
+                    icon={Shop}
                     size={30}
                     color={color}
                 /> }} />

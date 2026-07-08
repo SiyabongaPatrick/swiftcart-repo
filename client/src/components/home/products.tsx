@@ -1,50 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import tw from "twrnc";
-import { getProducts, getCategories } from "@/services/api";
+import { getProducts, getCategories, getPopularProducts } from "@/services/api";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Add01Icon, Add02Icon, Love } from "@hugeicons/core-free-icons";
 import { useRouter } from "expo-router";
 
 
-export default function Products({ category_name }) {
-    const [products, setproducts] = useState([]);
-    const [stores, setStores] = useState([]);
+export default function Products() {
+    const [products, setProducts] = useState([]);
     const [favorite, setFavorite] = useState();
     const [loading, setLoading] = useState(false)
 
     const router = useRouter();
 
-    const loadProducts = async () => {
-        setLoading(true)
-        try {
-            const product = await getProducts();
-            setproducts(product);
-
-            console.log(product)
-            setLoading(false)
-        } catch (error) {
-            console.error(error)
-        }
-    };
-
-    const categoryFilter = async () => {
+    const popularProducts = async () => {
         setLoading(true);
 
         try {
-            const categories = await getCategories(category_name);
-            setproducts(categories);
-
-            console.log(categories);
+            const popProducts = await getPopularProducts();
+            setProducts(popProducts);
+            console.log("Popular: ", popProducts)
             setLoading(false);
         } catch (error) {
-            console.error(error)
+            console.error(error);
             setLoading(false);
         }
     }
+
+
     useEffect(() => {
-        loadProducts();
-        categoryFilter()
+        popularProducts()
     }, [])
 
     if (loading) {
@@ -57,15 +43,17 @@ export default function Products({ category_name }) {
     }
 
     return (
-        <View>
+        <View style={[tw`mt-3`]}>
+            <Text style={styles.tag}>The Most Popular</Text>
             <FlatList
                 data={products}
                 keyExtractor={(item, index) => index.toString()}
-                numColumns={2}
-                showsVerticalScrollIndicator={false}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                //numColumns={2}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                //columnWrapperStyle={{ justifyContent: 'space-between' }}
                 renderItem={({ item }) => (
-                    <View style={styles.background}>
+                    <View style={[styles.background, { width: 200, marginRight: 15 }]}>
                         <TouchableOpacity onPress={() => router.push({
                             pathname: "/screens/details",
                             params: {
@@ -81,7 +69,7 @@ export default function Products({ category_name }) {
 
                         <View style={[tw`flex-row items-center justify-between py-1`]}>
                             <View>
-                                <Text style={styles.name}>{item.name.length > 10 ? item.name.substring(0, 10) + "..." : item.name}</Text>
+                                <Text style={styles.name}>{(item.name.length ?? 0) > 10 ? item.name.substring(0, 10) + "..." : (item.name || "No Name")}</Text>
                                 <Text style={styles.price}>${item.price}</Text>
                             </View>
 
@@ -116,7 +104,8 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 5,
         borderRadius: 15,
-        width: "47%"
+        width: "47%",
+        marginTop: 9
     },
 
     name: {
@@ -145,5 +134,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 20
+    },
+
+    tag: {
+        fontSize: 18,
+        fontWeight: '800'
     }
 })

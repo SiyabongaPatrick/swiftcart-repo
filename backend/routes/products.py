@@ -1,13 +1,13 @@
 from config.database import get_connection
 from flask import Blueprint, jsonify
+from helpers.errors import connection_error
 
 products_bp = Blueprint("products", __name__)
 
 @products_bp.route("/products", methods=["GET"])
 def get_products():
     connection = get_connection()
-    if connection is None:
-        return jsonify({"error": "Database connection failed."}), 500
+    connection_error(connection)
 
     try:
         cursor = connection.cursor()
@@ -37,9 +37,7 @@ def get_products():
 @products_bp.route("/products/<int:product_id>", methods=["GET"])
 def get_product(product_id):
     connection = get_connection()
-
-    if connection is None:
-        return jsonify({"error": "Database connection failed."}), 500
+    connection_error(connection)
     
     try:
         cursor = connection.cursor()
@@ -72,15 +70,19 @@ def get_product(product_id):
 @products_bp.route("/categories/<category_name>", methods=["GET"])
 def get_product_by_categories(category_name):
     connection = get_connection()
-
-    if connection is None:
-        return jsonify({"error": "Database connection failed."}), 500
+    connection_error(connection)
     
     try:
         cursor = connection.cursor()
-        query = "SELECT * FROM products WHERE category = %s"
+        
+        if category_name == "Home":
+            query = "SELECT * FROM products"
+            cursor.execute(query)
+        else:
+            query = "SELECT * FROM products WHERE category = %s"
+            cursor.execute(query, (category_name, ))
 
-        cursor.execute(query, (category_name, ))
+        
         products = cursor.fetchall()
 
         products_list = []
@@ -94,6 +96,40 @@ def get_product_by_categories(category_name):
                 "category": product[5]
             })
 
+        return jsonify(products_list)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
+@products_bp.route("/popular", methods=["GET"])
+def get_popular_products():
+    connection = get_connection()
+    connection_error(connection)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM products WHERE popular = 'Yes'")
+
+        popular_products = cursor.fetchall()
+        popular_product_list = []
+
+        for product in popular_products:
+
+            popular_product_list.append({
+                "id": product[0],
+                "name": product[1],
+                "price": product[2],
+                "image_url": product[3],
+                "store_id": product[4],
+                "category": product[5]
+            })
+        
+        return jsonify(popular_product_list)
+    
     except Exception as e:
         return jsonify({"error": str(e)})
     

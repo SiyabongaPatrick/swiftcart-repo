@@ -28,7 +28,7 @@ export default function Header () {
                             style={{position: "relative"}}
                         />
                         <View style={styles.badge}>
-                            <Text style={{color: colors.background}}>3</Text>
+                            <Text style={{color: colors.background}}></Text>
                         </View>
                     </TouchableOpacity>
 
