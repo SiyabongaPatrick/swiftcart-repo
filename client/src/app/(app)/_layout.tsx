@@ -40,15 +40,6 @@ export default function AppLayout() {
                 /> }} />
 
                 <Tabs.Screen 
-                name="wishlist" 
-                options={{ title: 'Wishlist', tabBarIcon: ({ color }) => 
-                <HugeiconsIcon
-                    icon={Love}
-                    size={30}
-                    color={color}
-                /> }} />
-
-                <Tabs.Screen 
                 name="profile" 
                 options={{ title: 'Profile', tabBarIcon: ({ color }) => 
                 <HugeiconsIcon

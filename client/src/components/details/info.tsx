@@ -43,12 +43,6 @@ export default function Info ({ name, price, store }) {
                 
                 <Text style={styles.price}>${price}</Text>
             </View>
-
-            <View style={[tw`p-2`]}>
-                <Text style={styles.info}>Lorem ipsum dolor sit amet consectetur, adipisicing elit. 
-                    Fugit libero debitis autem hic expedita. Aliquam, ullam repellendus facilis reprehenderit, 
-                    consequatur mollitia delectus voluptatibus rerum nemo veritatis vitae fugit, reiciendis corporis!</Text>
-            </View>
         </View>
     )
 }

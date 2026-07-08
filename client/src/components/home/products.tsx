@@ -7,12 +7,29 @@ import { Add01Icon, Add02Icon, Love } from "@hugeicons/core-free-icons";
 import { useRouter } from "expo-router";
 
 
-export default function Products() {
+export default function Products({ categoryName }) {
     const [products, setProducts] = useState([]);
+    const [stores, setStores] = useState([]);
     const [favorite, setFavorite] = useState();
+    const [popular, setPopular] = useState([]);
     const [loading, setLoading] = useState(false)
 
     const router = useRouter();
+
+    const categoryFilter = async (categoryName) => {
+        setLoading(true);
+
+        try {
+            const categories = await getCategories(categoryName);
+            setProducts(categories);
+
+            console.log("API RESPONSE:", categories);
+            setLoading(false);
+        } catch (error) {
+            console.error(error)
+            setLoading(false);
+        }
+    }
 
     const popularProducts = async () => {
         setLoading(true);
@@ -20,8 +37,6 @@ export default function Products() {
         try {
             const popProducts = await getPopularProducts();
             setProducts(popProducts);
-            console.log("Popular: ", popProducts)
-            setLoading(false);
         } catch (error) {
             console.error(error);
             setLoading(false);
@@ -30,8 +45,8 @@ export default function Products() {
 
 
     useEffect(() => {
-        popularProducts()
-    }, [])
+        categoryFilter(categoryName)
+    }, [categoryName])
 
     if (loading) {
         return (
@@ -43,17 +58,16 @@ export default function Products() {
     }
 
     return (
-        <View style={[tw`mt-3`]}>
-            <Text style={styles.tag}>The Most Popular</Text>
+        <View>
             <FlatList
                 data={products}
                 keyExtractor={(item, index) => index.toString()}
-                //numColumns={2}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                //columnWrapperStyle={{ justifyContent: 'space-between' }}
+                numColumns={2}
+                showsVerticalScrollIndicator={false}
+                style={{marginBottom: "23%"}}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
                 renderItem={({ item }) => (
-                    <View style={[styles.background, { width: 200, marginRight: 15 }]}>
+                    <View style={styles.background}>
                         <TouchableOpacity onPress={() => router.push({
                             pathname: "/screens/details",
                             params: {
@@ -69,26 +83,8 @@ export default function Products() {
 
                         <View style={[tw`flex-row items-center justify-between py-1`]}>
                             <View>
-                                <Text style={styles.name}>{(item.name.length ?? 0) > 10 ? item.name.substring(0, 10) + "..." : (item.name || "No Name")}</Text>
+                                <Text style={styles.name}>{item.name}</Text>
                                 <Text style={styles.price}>${item.price}</Text>
-                            </View>
-
-                            <View style={[tw`flex-row items-center gap-1`]}>
-                                <TouchableOpacity style={styles.addButton}>
-                                    <HugeiconsIcon
-                                        icon={Add01Icon}
-                                        size={22}
-                                        color={"#FFFFFF"}
-                                    />
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={styles.addButton1} onPress={() => setFavorite(favorite)}>
-                                    <HugeiconsIcon
-                                        icon={Love}
-                                        size={25}
-                                        color={favorite ? "gray" : "red"}
-                                    />
-                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -104,12 +100,11 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 5,
         borderRadius: 15,
-        width: "47%",
-        marginTop: 9
+        width: "47%"
     },
 
     name: {
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: '500',
         color: 'gray'
     },
@@ -134,10 +129,5 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 20
-    },
-
-    tag: {
-        fontSize: 18,
-        fontWeight: '800'
     }
 })

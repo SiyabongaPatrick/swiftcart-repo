@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import Header from "@/components/home/header";
-import User from "@/components/home/userCard";
+import SearchBar from "@/components/home/searchBar";
 import Banner from "@/components/home/banner";
 import Category from "@/components/home/category";
 import Products from "@/components/home/products";
@@ -14,8 +14,9 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <Header/>
-      <Products/>
       <Banner/>
+      <Category onSelectedCategory={(name) => setSelectedCategory(name)}/>
+      <Products categoryName={selectedCategory}/>
     </View>
   );
 }

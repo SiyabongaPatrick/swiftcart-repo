@@ -29,3 +29,8 @@ export async function getPopularProducts() {
     const response = await fetch(`${API_URL}/popular`);
     return response.json();
 }
+
+export async function addCart() {
+    const response = await fetch(`${API_URL}/cart/add`);
+    return response.json();
+}

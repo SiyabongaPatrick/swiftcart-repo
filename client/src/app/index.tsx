@@ -6,23 +6,9 @@ import { useRouter } from "expo-router";
 
 export default function Splash() {
     
-    const router = useRouter();
-    useEffect(() => {
-        setTimeout(() => {
-            router.push("/(app)");
-        }, 3000);
-    }, []);
-
     return(
         <View style={styles.container}>
             
-            <View style={[tw`items-center justify-center`]}>
-                <Image 
-                    source={require("@/assets/images/logo.png")}
-                    style={styles.logo}
-                />
-            </View>
-           
         </View>
     );
 }

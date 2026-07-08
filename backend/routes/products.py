@@ -23,7 +23,8 @@ def get_products():
                 "name": product[1],
                 "price": product[2],
                 "image_url": product[3],
-                "store_id": product[4]
+                "store_id": product[4],
+                "category": product[5]
             })
 
         cursor.close()
@@ -56,7 +57,8 @@ def get_product(product_id):
             "name": product[1],
             "price": product[2],
             "image_url": product[3],
-            "store_id": product[4]
+            "store_id": product[4],
+            "category": product[5]
         }
         
         cursor.close()
