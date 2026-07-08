@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import tw from "twrnc";
-import { getProducts, getStores } from "@/services/api";
+import { getProducts, getCategories } from "@/services/api";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Add01Icon, Add02Icon, Love } from "@hugeicons/core-free-icons";
 import { useRouter } from "expo-router";
 
 
-export default function Products() {
+export default function Products({ category_name }) {
     const [products, setproducts] = useState([]);
     const [stores, setStores] = useState([]);
     const [favorite, setFavorite] = useState();
@@ -28,10 +28,23 @@ export default function Products() {
         }
     };
 
-    
+    const categoryFilter = async () => {
+        setLoading(true);
 
+        try {
+            const categories = await getCategories(category_name);
+            setproducts(categories);
+
+            console.log(categories);
+            setLoading(false);
+        } catch (error) {
+            console.error(error)
+            setLoading(false);
+        }
+    }
     useEffect(() => {
-        loadProducts()
+        loadProducts();
+        categoryFilter()
     }, [])
 
     if (loading) {

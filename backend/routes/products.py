@@ -67,3 +67,36 @@ def get_product(product_id):
         return jsonify(product_data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@products_bp.route("/categories/<category_name>", methods=["GET"])
+def get_product_by_categories(category_name):
+    connection = get_connection()
+
+    if connection is None:
+        return jsonify({"error": "Database connection failed."}), 500
+    
+    try:
+        cursor = connection.cursor()
+        query = "SELECT * FROM products WHERE category = %s"
+
+        cursor.execute(query, (category_name, ))
+        products = cursor.fetchall()
+
+        products_list = []
+        for product in products:
+            products_list.append({
+                "id": product[0],
+                "name": product[1],
+                "price": product[2],
+                "image_url": product[3],
+                "store_id": product[4],
+                "category": product[5]
+            })
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    
+    finally:
+        cursor.close()
+        connection.close()

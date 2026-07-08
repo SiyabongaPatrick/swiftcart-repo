@@ -1,1 +1,3 @@
-SELECT * FROM order_items;
+SELECT *
+FROM products
+ORDER BY product_id ASC;

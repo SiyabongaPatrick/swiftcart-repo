@@ -19,3 +19,8 @@ export async function getStore(id) {
     const response = await fetch(`${API_URL}/stores/${id}`);
     return await response.json();
 }
+
+export async function getCategories(category_name) {
+    const response = await fetch(`${API_URL}/categories/${category_name}`);
+    return response.json();
+}

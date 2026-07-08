@@ -4,8 +4,8 @@ import { HugeiconsIcon } from "@hugeicons/react-native";
 import { useState } from "react";
 import { Home01Icon, Restaurant01Icon, Shirt01Icon, LaptopCloudIcon } from "@hugeicons/core-free-icons";
 
-export default function Category() {
-    const [active, setActive] = useState("Electronics")
+export default function Category({ onSelectedCategory }) {
+    const [active, setActive] = useState("Home")
 
     const categories = [ 
         {name: "Home", icon: Home01Icon},
@@ -20,7 +20,10 @@ export default function Category() {
                 {categories.map((items, i) => (
                     <TouchableOpacity key={i} style={[styles.button, 
                         {backgroundColor: active === items.name ? "orange" : "#1E293B"}]} 
-                        onPress={() => setActive(items.name)}>
+                        onPress={() => {
+                            setActive(items.name);
+                            onSelectedCategory(items.name);                       
+                        }}>
                         <HugeiconsIcon
                             icon={items.icon}
                             size={20}
