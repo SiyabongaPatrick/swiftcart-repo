@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { HugeiconsIcon } from "@hugeicons/react-native";
-import { Home01Icon, Cart, Profile02Icon, Setting06Icon, Love, Shop } from "@hugeicons/core-free-icons";
+import { Home01Icon, Cart, Profile, Setting06Icon, Love, Shop } from "@hugeicons/core-free-icons";
 
 export default function AppLayout() {
     return(
@@ -43,7 +43,7 @@ export default function AppLayout() {
                 name="profile" 
                 options={{ title: 'Profile', tabBarIcon: ({ color }) => 
                 <HugeiconsIcon
-                    icon={Profile02Icon}
+                    icon={Profile}
                     size={30}
                     color={color}
                 /> }} />

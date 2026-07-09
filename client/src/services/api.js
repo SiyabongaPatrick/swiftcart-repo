@@ -34,3 +34,32 @@ export async function addCart() {
     const response = await fetch(`${API_URL}/cart/add`);
     return response.json();
 }
+
+export async function signUp(userData) {
+    const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+    });
+
+    return response.json();
+}
+
+export async function logIn(userData) {
+    const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error)
+    }
+    return data;
+}

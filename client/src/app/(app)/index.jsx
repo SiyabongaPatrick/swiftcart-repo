@@ -13,6 +13,8 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.topCircle} />
+      <View style={styles.bottomCircle} />
       <Header/>
       <Banner/>
       <Category onSelectedCategory={(name) => setSelectedCategory(name)}/>
@@ -27,4 +29,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     padding: 5
   },
+
+  topCircle: {
+        position: 'absolute',
+        top: -120,
+        right: -80,
+        width: 260,
+        height: 260,
+        borderRadius: 130,
+        backgroundColor: 'rgba(255, 153, 0, 0.12)',
+    },
+
+    bottomCircle: {
+        position: 'absolute',
+        bottom: -100,
+        left: -60,
+        width: 220,
+        height: 220,
+        borderRadius: 110,
+        backgroundColor: 'rgba(255, 153, 0, 0.08)',
+    },
 });

@@ -1,27 +1,19 @@
-import { View, Text, Image, StyleSheet } from "react-native";
-import tw from "twrnc";
-import { colors } from "@/constants/colors";
 import { useEffect } from "react";
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
+import { useAuth } from "@/context/auth";
 
-export default function Splash() {
-    
-    return(
-        <View style={styles.container}>
-            
-        </View>
-    );
+export default function Index() {
+    const { user, isLoading } = useAuth();
+
+    useEffect(() => {
+        if (isLoading) return;
+
+        if (user) {
+            router.replace("/(app)");
+        } else {
+            router.replace("/(auth)");
+        }
+    }, [user, isLoading]);
+
+    return null;
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: colors.background,
-        justifyContent: "center"
-    },
-
-    logo: {
-        width: "50%",
-        height: "50%"
-    },
-})

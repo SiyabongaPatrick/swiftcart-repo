@@ -1,2 +1,1 @@
-SELECT *
-FROM products;
+SELECT * FROM customers;
