@@ -1,3 +1,5 @@
+import { getToken } from "@/services/storage";
+
 const API_URL ="http://192.168.0.104:5000";
 
 export async function getStores() {
@@ -30,8 +32,32 @@ export async function getPopularProducts() {
     return response.json();
 }
 
-export async function addCart() {
-    const response = await fetch(`${API_URL}/cart/add`);
+export async function addCart(data) {
+    const token = await getToken();
+    const response = await fetch(`${API_URL}/cart/add`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data)
+    });
+
+    return response.json();
+    
+}
+
+export async function getCart() {
+    const token = await getToken();
+    console.log("token", token);
+    const response = await fetch(`${API_URL}/cart`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    });
+
     return response.json();
 }
 

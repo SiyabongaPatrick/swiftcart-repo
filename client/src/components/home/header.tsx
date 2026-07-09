@@ -19,7 +19,7 @@ export default function Header () {
                     />
                 </View>
 
-                <View style={[tw`flex-row items-center gap-2`]}>
+                <View style={styles.container}>
                     <TouchableOpacity>
                         <HugeiconsIcon
                             icon={Notification}
@@ -31,6 +31,8 @@ export default function Header () {
                             <Text style={{color: colors.background}}></Text>
                         </View>
                     </TouchableOpacity>
+
+                    <View style={styles.separator}/>
 
                     <TouchableOpacity>
                         <HugeiconsIcon
@@ -56,5 +58,21 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: "center",
         justifyContent: "center"
+    },
+
+    container: {
+        backgroundColor: "#FFFFFF",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 15,
+        padding: 10,
+        borderRadius: 10
+    },
+
+    separator: {
+        backgroundColor: "gray",
+        width: 1,
+        height: 25
     }
 })

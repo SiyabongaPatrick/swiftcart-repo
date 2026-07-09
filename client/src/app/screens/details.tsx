@@ -55,7 +55,11 @@ export default function Details () {
                 selectedSize={selectedSize}
                 onSelect={(size) => setSelectedSize(size)}/>
                 <Description/>
-            <CTAButton/>
+            <CTAButton
+                productId={product.product_id || product.id}
+                selectedSize={selectedSize}
+                quantity={1}
+            />
         </View>
     );
 }

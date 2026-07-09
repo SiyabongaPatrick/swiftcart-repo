@@ -35,6 +35,8 @@ export default function Auth() {
         try {
             const result = await signUp({ name, email, password })
             ToastAndroid.show(result.message, ToastAndroid.LONG);
+            console.log(result)
+            await signIn(result);
             router.replace("/(app)");
         } catch (error) {
             ToastAndroid.show(error.message, ToastAndroid.LONG);
@@ -44,7 +46,8 @@ export default function Auth() {
     const signingIn = async () => {
         try {
             const result = await logIn({ email, password });
-            await signIn(result.access_token);
+            await signIn(result);
+            console.log(result)
             ToastAndroid.show(result.message, ToastAndroid.LONG);
             router.replace("/(app)")
         } catch (error) {

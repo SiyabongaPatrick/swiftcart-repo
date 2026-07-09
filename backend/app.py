@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from routes.stores import stores_bp
 from routes.products import products_bp
 from routes.customers import customers_bp
+from routes.cart import cart_bp
 
 app = Flask(__name__)
 app.config["JWT_SECRET_KEY"] = "hfgsdhg3467sdhg7efhgvshd"
@@ -11,7 +12,7 @@ app.config["JWT_SECRET_KEY"] = "hfgsdhg3467sdhg7efhgvshd"
 jwt = JWTManager(app)
 CORS(app)
 
-blueprint = [stores_bp, products_bp, customers_bp]
+blueprint = [stores_bp, products_bp, customers_bp, cart_bp]
 
 for bp in blueprint:
     app.register_blueprint(bp)

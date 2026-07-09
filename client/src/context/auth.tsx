@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getToken, saveToken, removeToken } from "@/services/storage";
+import { getToken, saveToken, removeToken, saveAuth, getAuth, removeAuth } from "@/services/storage";
 
 
 
@@ -19,22 +19,21 @@ export function AuthProvider({ children }:
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const signIn = async (token) => {
-        await saveToken(token);
-        setUser({ token });
+    const signIn = async (auth) => {
+        await saveAuth(auth);
+        setUser(auth);
     }
 
-    const signOut = async (token) => {
-        await removeToken();
+    const signOut = async () => {
+        await removeAuth();
         setUser(null);
     }
 
     useEffect(() => {
         const loadUser = async () => {
-            const token = await getToken();
-
-            if (token) {
-                setUser({ token });
+            const auth = await getAuth();
+            if (auth) {
+                setUser(auth);
             }
             setIsLoading(false);
         };

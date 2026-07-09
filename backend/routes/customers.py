@@ -26,13 +26,26 @@ def sign_up():
         cursor = connection.cursor()
         query = "INSERT INTO customers" \
         "(full_name, email, password)" \
-        " VALUES (%s, %s, %s)"
+        " VALUES (%s, %s, %s) RETURNING customer_id"
 
         cursor.execute(query, (name, email, password_hash))
 
+        customer_id = cursor.fetchone()[0]
+
         connection.commit()
 
-        return jsonify({"message": "User registered successfully!"}), 201
+        #access_token = create_access_token(identity=customer_id)
+        access_token = create_access_token(identity=str(customer_id))
+
+        return jsonify({"message": "User registered successfully!",
+                        "access_token": access_token,
+                        "user": {
+                            "customer_id": customer_id,
+                            "name": name,
+                            "email": email
+                        }
+                        }), 201
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500 
     
@@ -69,7 +82,7 @@ def sign_in():
         if not check_password_hash(stored_password_hash, password):
             return jsonify({"error": "Invalid email or password"}), 401
         
-        access_token = create_access_token(identity=customer[0])
+        access_token = create_access_token(identity=str(customer[0]))
 
         return jsonify({"message": "Login successful",
                         "access_token": access_token,
