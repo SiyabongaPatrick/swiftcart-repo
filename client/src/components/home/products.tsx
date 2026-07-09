@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import tw from "twrnc";
-import { getProducts, getCategories, getPopularProducts } from "@/services/api";
+import { getProducts, getCategories, getPopularProducts, addToWishlist  } from "@/services/api";
 import { HugeiconsIcon } from "@hugeicons/react-native";
 import { Add01Icon, Add02Icon, Love } from "@hugeicons/core-free-icons";
 import { useRouter } from "expo-router";
@@ -31,18 +31,13 @@ export default function Products({ categoryName }) {
         }
     }
 
-    const popularProducts = async () => {
-        setLoading(true);
-
+    const addWishlist = async (productID) => {
         try {
-            const popProducts = await getPopularProducts();
-            setProducts(popProducts);
+            await addToWishlist(productID)
         } catch (error) {
-            console.error(error);
-            setLoading(false);
+            console.error(error)
         }
     }
-
 
     useEffect(() => {
         categoryFilter(categoryName)
@@ -86,6 +81,14 @@ export default function Products({ categoryName }) {
                                 <Text style={styles.name}>{item.name}</Text>
                                 <Text style={styles.price}>${item.price}</Text>
                             </View>
+
+                            <TouchableOpacity onPress={() => {addWishlist(item.id)}} style={styles.wishlist}>
+                                <HugeiconsIcon
+                                    icon={Love}
+                                    size={25}
+                                    color="red"
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
                 )}
@@ -129,5 +132,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 20
+    },
+
+    wishlist: {
+        position: "absolute",
+        top: "60%",
+        left: "80%",
+        right: 0
     }
 })

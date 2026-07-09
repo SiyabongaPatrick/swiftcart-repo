@@ -61,6 +61,90 @@ export async function getCart() {
     return response.json();
 }
 
+export async function increaseQuantity(productID) {
+    const token = await getToken()
+    const response = await fetch(`${API_URL}/cart/increase`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ product_id: productID })
+    })
+
+    return response.json();
+}
+
+export async function decreaseQuantity(productID) {
+    const token = await getToken()
+    const response = await fetch(`${API_URL}/cart/decrease`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ product_id: productID })
+    })
+
+    return response.json();
+}
+
+export async function removeQuantity(id) {
+    const token = await getToken();
+    const response = await fetch(`${API_URL}/cart/remove`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ id: id })
+    })
+
+    return response.json();
+}
+
+export async function getWishlist() {
+    const token = await getToken()
+    const response = await fetch(`${API_URL}/wishlist`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        }
+    })
+
+    return response.json()
+}
+
+
+export async function addToWishlist(productID) {
+    const token = await getToken()
+    const response = await fetch(`${API_URL}/wishlist/add`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ product_id: productID })
+    })
+
+    return response.json()
+}
+
+export async function removeFromWishlist(id) {
+    const token = await getToken()
+    const response = await fetch(`${API_URL}/wishlist/remove`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ id: id })
+    })
+
+    return response.json()
+}
+
 export async function signUp(userData) {
     const response = await fetch(`${API_URL}/register`, {
         method: "POST",

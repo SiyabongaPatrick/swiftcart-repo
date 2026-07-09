@@ -20,6 +20,8 @@ export default function Header () {
                 </View>
 
                 <View style={styles.container}>
+
+                    {/* 
                     <TouchableOpacity>
                         <HugeiconsIcon
                             icon={Notification}
@@ -33,6 +35,8 @@ export default function Header () {
                     </TouchableOpacity>
 
                     <View style={styles.separator}/>
+                    */}
+                    
 
                     <TouchableOpacity>
                         <HugeiconsIcon

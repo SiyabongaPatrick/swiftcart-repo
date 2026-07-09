@@ -16,8 +16,8 @@ export default function Profile() {
             <View style={styles.topCircle} />
             <View style={styles.bottomCircle} />
             <ProfileHeader
-                name={user.user.name}
-                email={user.user.email} />
+                name={user?.user.name}
+                email={user?.user.email} />
 
             <MenuItem
                 icon={Package}

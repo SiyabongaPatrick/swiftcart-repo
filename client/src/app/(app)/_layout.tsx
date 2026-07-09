@@ -31,10 +31,10 @@ export default function AppLayout() {
                 /> }} />
 
                 <Tabs.Screen 
-                name="stores" 
-                options={{ title: 'Stores', tabBarIcon: ({ color }) => 
+                name="wishlist" 
+                options={{ title: 'Wishlist', tabBarIcon: ({ color }) => 
                 <HugeiconsIcon
-                    icon={Shop}
+                    icon={Love}
                     size={30}
                     color={color}
                 /> }} />

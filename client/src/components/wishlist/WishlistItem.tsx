@@ -6,7 +6,7 @@ import {
 
 import QuantitySelector from "@/components/cart/QuantitySelector";
 
-type CartItemProps = {
+type WishlistItemProps = {
   image: string;
   name: string;
   category: string;
@@ -17,16 +17,13 @@ type CartItemProps = {
   onRemove: () => void;
 };
 
-export default function CartItem({
+export default function WishlistItem({
   image,
   name,
   category,
   price,
-  quantity,
-  onIncrease,
-  onDecrease,
   onRemove,
-}: CartItemProps) {
+}: WishlistItemProps) {
   return (
     <View style={styles.container}>
       <Image
@@ -43,29 +40,26 @@ export default function CartItem({
         <Text style={styles.category}>
           {category}
         </Text>
+        <View style={styles.priceButton}>
+          <Text style={styles.price}>
+            $ {price}
+          </Text>
 
-        <Text style={styles.price}>
-          $ {price}
-        </Text>
+          <View style={styles.bottomRow}>
 
-        <View style={styles.bottomRow}>
-          <QuantitySelector
-            quantity={quantity}
-            onIncrease={onIncrease}
-            onDecrease={onDecrease}
-          />
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={onRemove}
+              activeOpacity={0.8}
+            >
+              <HugeiconsIcon
+                icon={Delete01Icon}
+                size={20}
+                color="#EF4444"
+              />
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            style={styles.removeButton}
-            onPress={onRemove}
-            activeOpacity={0.8}
-          >
-            <HugeiconsIcon
-              icon={Delete01Icon}
-              size={20}
-              color="#EF4444"
-            />
-          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -95,8 +89,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 80,
-    height: 80,
+    width: 95,
+    height: 95,
     borderRadius: 16,
     backgroundColor: "#F3F4F6",
   },
@@ -121,7 +115,7 @@ const styles = StyleSheet.create({
 
   price: {
     marginTop: 8,
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: "700",
     color: "#FF9900",
   },
@@ -141,4 +135,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
+  priceButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  }
 });

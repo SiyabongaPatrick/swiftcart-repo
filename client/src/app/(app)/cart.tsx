@@ -9,24 +9,11 @@ import CartItem from "@/components/cart/CartItem";
 import CartSummary from "@/components/cart/CartSummary";
 import CheckoutButton from "@/components/cart/CheckoutButton";
 import EmptyCart from "@/components/cart/EmptyCart";
-import { getCart } from "@/services/api";
+import { getCart, increaseQuantity, decreaseQuantity, removeQuantity } from "@/services/api";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
 
-  /*
-  useEffect(() => {
-    const loadCart = async () => {
-      try {
-        const items = await getCart();
-        console.log(items)
-        setCartItems(items);
-      } catch (error) {
-          console.error(error);
-      }
-    };
-    loadCart();
-  }, []) */
 
   useFocusEffect(
     useCallback(() => {
@@ -39,9 +26,47 @@ export default function Cart() {
           console.error(error)
         }
       };
+      
       loadCart();
     }, [])
   );
+
+  const increase = async (productID) => {
+    try {
+      await increaseQuantity(productID);
+      const updatedItems = await getCart();
+      console.log(updatedItems);
+      setCartItems(updatedItems);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const decrease = async (productID) => {
+    try {
+      await decreaseQuantity(productID);
+      const updatedItems = await getCart();
+      console.log(updatedItems);
+      setCartItems(updatedItems);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const remove = async (id) => {
+    try {
+      await removeQuantity(id);
+      const updatedItems = await getCart();
+      console.log(updatedItems);
+      setCartItems(updatedItems);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+ 
+  const subtotal = cartItems.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0)
+
 
   return (
     <View style={styles.container}>
@@ -68,16 +93,16 @@ export default function Cart() {
                 category={item.category}
                 price={item.price}
                 quantity={item.quantity}
-                onIncrease={() => {}}
-                onDecrease={() => {}}
-                onRemove={() => {}}
+                onIncrease={() => {increase(item.product_id)}}
+                onDecrease={() => {decrease(item.product_id)}}
+                onRemove={() => {remove(item.id)}}
               />
             ))}
 
             <CartSummary
-              subtotal={6597}
+              subtotal={subtotal}
               shipping={0}
-              total={6597}
+              total={subtotal}
             />
 
             <CheckoutButton

@@ -17,7 +17,7 @@ export default function CartSummary({
 
       <View style={styles.row}>
         <Text style={styles.label}>Subtotal</Text>
-        <Text style={styles.value}>R {subtotal.toFixed(2)}</Text>
+        <Text style={styles.value}>$ {subtotal.toFixed(2)}</Text>
       </View>
 
       <View style={styles.row}>
@@ -31,7 +31,7 @@ export default function CartSummary({
 
       <View style={styles.row}>
         <Text style={styles.totalLabel}>Total</Text>
-        <Text style={styles.totalValue}>R {total.toFixed(2)}</Text>
+        <Text style={styles.totalValue}>$ {total.toFixed(2)}</Text>
       </View>
     </View>
   );

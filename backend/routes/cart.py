@@ -132,3 +132,108 @@ def add_cart():
     finally:
         cursor.close()
         connection.close()
+
+@cart_bp.route("/cart/increase", methods=["POST"])
+@jwt_required()
+def quantity_increase():
+
+    customer_id = int(get_jwt_identity())
+    data = request.get_json()
+
+    product_id = data.get("product_id")
+
+    if not product_id:
+        return jsonify({"error": "Missing required fields"}), 400
+    
+    connection = get_connection()
+    connection_error(connection)
+
+    try:
+        cursor = connection.cursor()
+
+        query = """
+            UPDATE cart
+            SET quantity = quantity + 1
+            WHERE customer_id = %s AND product_id = %s;
+        """
+
+        cursor.execute(query, (customer_id, product_id,))
+        connection.commit()
+
+        return jsonify({"message": "Quantity updated successful"}), 200
+    
+    except Exception as e:
+        print(str(e))
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+@cart_bp.route("/cart/decrease", methods=["POST"])
+@jwt_required()
+def quantity_decrease():
+
+    customer_id = int(get_jwt_identity())
+    data = request.get_json()
+
+    product_id = data.get("product_id")
+
+    if not product_id:
+        return jsonify({"error": "Missing required fields"}), 400
+    
+    connection = get_connection()
+    connection_error(connection)
+
+    try:
+        cursor = connection.cursor()
+
+        query = """
+            UPDATE cart
+            SET quantity = quantity - 1
+            WHERE customer_id = %s AND product_id = %s;
+        """
+
+        cursor.execute(query, (customer_id, product_id))
+        connection.commit()
+
+        return jsonify({"message": "Quantity updated successful"}), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+@cart_bp.route("/cart/remove", methods=["POST"])
+@jwt_required()
+def remove_quantity():
+
+    customer_id = int(get_jwt_identity())
+
+    data = request.get_json()
+    id = data.get("id")
+
+    connection = get_connection()
+    connection_error(connection)
+
+    if not id:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        cursor = connection.cursor()
+        query = """
+            DELETE FROM cart
+            WHERE id = %s AND customer_id = %s
+        """
+
+        cursor.execute(query, (id, customer_id))
+        connection.commit()
+
+        return jsonify({"message": "Quantity removed successful"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+
